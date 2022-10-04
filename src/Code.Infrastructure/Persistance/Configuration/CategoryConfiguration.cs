@@ -1,8 +1,4 @@
-﻿using Code.Domain.Entities;
-using Microsoft.EntityFrameworkCore;
-using Microsoft.EntityFrameworkCore.Metadata.Builders;
-
-namespace Code.Infrastructure.Persistance.Configuration;
+﻿namespace Code.Infrastructure.Persistance.Configuration;
 
 public class CategoryConfiguration : IEntityTypeConfiguration<Category>
 {

@@ -1,13 +1,4 @@
-﻿using Code.Application.Common.Interfaces;
-using Code.Domain.Entities;
-using Code.Infrastructure.Identity;
-using Duende.IdentityServer.EntityFramework.Options;
-using Microsoft.AspNetCore.ApiAuthorization.IdentityServer;
-using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.Options;
-using System.Reflection;
-
-namespace Code.Infrastructure.Persistance
+﻿namespace Code.Infrastructure.Persistance
 {
     public class AppDbContext : ApiAuthorizationDbContext<AppUser>, IApplicationDbContext
     {
