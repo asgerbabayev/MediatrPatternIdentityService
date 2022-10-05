@@ -1,13 +1,17 @@
 using Code.Application;
 using Code.Infrastructure;
 using Code.Infrastructure.Persistance;
+using Code.WebApi.Filters;
+using FluentValidation.AspNetCore;
 
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 
-builder.Services.AddControllers();
-// Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
+builder.Services.AddControllers(opt => opt.Filters.Add<ApiExceptionFilterAttribute>());
+builder.Services.AddFluentValidationAutoValidation(x => x.DisableDataAnnotationsValidation = false)
+    .AddFluentValidationClientsideAdapters();
+
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
@@ -32,8 +36,8 @@ if (app.Environment.IsDevelopment())
 
 app.UseHttpsRedirection();
 
-app.UseAuthentication();
-app.UseIdentityServer();
+//app.UseAuthentication();
+//app.UseIdentityServer();
 app.UseAuthorization();
 
 app.MapControllers();

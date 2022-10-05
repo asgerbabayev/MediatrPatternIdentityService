@@ -1,18 +1,14 @@
-﻿using AutoMapper;
-using Code.Application.Categories.Commands.CreateCategory;
+﻿using Code.Application.Common.Exceptions;
 using Code.Application.Common.Interfaces;
 using MediatR;
-using Microsoft.EntityFrameworkCore.ChangeTracking;
 
 namespace Code.Application.Categories.Commands.DeleteCategory;
 
-public record DeleteCategoryCommand(int Id) : IRequest;
-
-public class CreateCategoryCommandHandler : IRequestHandler<DeleteCategoryCommand>
+public class DeleteCategoryCommandHandler : IRequestHandler<DeleteCategoryCommand>
 {
     private readonly IApplicationDbContext _dbContext;
 
-    public CreateCategoryCommandHandler(IApplicationDbContext dbContext, IMapper mapper)
+    public DeleteCategoryCommandHandler(IApplicationDbContext dbContext)
     {
         _dbContext = dbContext;
     }
@@ -22,7 +18,7 @@ public class CreateCategoryCommandHandler : IRequestHandler<DeleteCategoryComman
     {
         Category? category = await _dbContext.Categories.FindAsync(request.Id);
         if (category is null)
-            throw new Exception();
+            throw new NotFoundException("DeleteCategoryCommand");
         _dbContext.Categories.Remove(category);
         await _dbContext.SaveChangesAsync(cancellationToken);
         return Unit.Value;

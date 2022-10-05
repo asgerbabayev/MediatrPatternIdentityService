@@ -2,6 +2,7 @@
 using AutoMapper.QueryableExtensions;
 using Code.Application.Categories.Queries.GetCategories;
 using Code.Application.Common.Interfaces;
+using Code.Application.Common.Mapping;
 using MediatR;
 
 namespace Code.Application.Categories.Queries.GetCategory;

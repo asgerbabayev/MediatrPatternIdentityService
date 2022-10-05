@@ -1,35 +1,16 @@
 ﻿using AutoMapper;
+using Code.Application.Common.Exceptions;
 using Code.Application.Common.Interfaces;
-using FluentValidation;
+using Code.Application.Common.Mapping;
 using MediatR;
 
 namespace Code.Application.Categories.Commands.UpdateCategory;
 
-public class UpdateCategoryCommand : IRequest
+public class UpdateCategoryCommand : IRequest, IMapFrom<Category>
 {
     public int Id { get; set; }
     public string Name { get; set; } = null!;
     public string? Description { get; set; }
-}
-public class UpdateCategoryCommandValidator : AbstractValidator<UpdateCategoryCommand>
-{
-    private readonly IApplicationDbContext _dbContext;
-    public UpdateCategoryCommandValidator(IApplicationDbContext dbContext)
-    {
-        _dbContext = dbContext;
-
-
-        RuleFor(c => c.Name)
-            .NotEmpty().WithMessage("Category is required")
-            .MaximumLength(200).WithMessage("Categiry/Name must not exceed 200 characters")
-            .MustAsync(BeUniqName).WithMessage("The specified Category/Name already exsist");
-    }
-    public async Task<bool> BeUniqName(UpdateCategoryCommand model, string name, CancellationToken cancellationToken)
-    {
-        return await _dbContext.Categories
-            .Where(c => c.Id != model.Id)
-            .AllAsync(c => c.Name != name, cancellationToken);
-    }
 }
 public class UpdateCategoryCommandHandler : IRequestHandler<UpdateCategoryCommand>
 {
@@ -45,7 +26,7 @@ public class UpdateCategoryCommandHandler : IRequestHandler<UpdateCategoryComman
     {
         Category? category = await _dbContext.Categories.FindAsync(new object?[] { request.Id }, cancellationToken: cancellationToken);
         if (category is null)
-            throw new Exception(""); //Todo: Custom Exception 
+            throw new NotFoundException("UpdateCategoryCommand"); 
 
         //category.Description = request.Description;
         //category.Name = request.Name;

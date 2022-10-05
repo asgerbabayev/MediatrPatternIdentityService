@@ -1,11 +1,14 @@
 ﻿using AutoMapper;
+using Code.Application.Categories.Commands.CreateCategory;
+using Code.Application.Categories.Commands.DeleteCategory;
+using Code.Application.Categories.Commands.UpdateCategory;
 using System.Reflection;
 
 namespace Code.Application.Common.Mapping;
 
 public interface IMapFrom<T>
 {
-    void Mapping(Profile profile) => profile.CreateMap(typeof(T), GetType());
+    void Mapping(Profile profile) => profile.CreateMap(typeof(T), GetType()).ReverseMap();
 }
 public class MappingProfile : Profile
 {

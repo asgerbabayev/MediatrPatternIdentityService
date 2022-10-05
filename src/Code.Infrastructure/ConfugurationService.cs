@@ -1,4 +1,6 @@
-﻿namespace Code.Infrastructure;
+﻿using Code.Infrastructure.Persistance.Interceptors;
+
+namespace Code.Infrastructure;
 public static class ConfugurationService
 {
     public static IServiceCollection AddInfrastructureServices(this IServiceCollection services, IConfiguration configuration)
@@ -6,6 +8,9 @@ public static class ConfugurationService
         services.AddDbContext<AppDbContext>(
             opt => opt.UseSqlServer(configuration.GetConnectionString("default"),
             builderOpt => builderOpt.MigrationsAssembly(typeof(AppDbContext).Assembly.FullName)));
+
+        services.AddScoped<AuditableEntitySaveChangesInterceptor>();
+
 
         services.AddScoped<IApplicationDbContext>(factory => factory.GetRequiredService<AppDbContext>());
         services.AddScoped<AppDbContextInitializer>();
